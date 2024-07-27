@@ -7,7 +7,7 @@
 
 # production
 react-frontend/build
-express-backend/.env
+*/.env
 
 # misc
 react-frontend/.DS_Store
