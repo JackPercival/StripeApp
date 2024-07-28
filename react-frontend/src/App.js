@@ -5,26 +5,6 @@ import "./App.css";
 
 const apiBaseUrl = process.env.REACT_APP_API_BASE_URL;
 
-const ProductDisplay = () => (
-  <section>
-    <div className="product">
-      <img
-        src="https://i.imgur.com/EHyR2nP.png"
-        alt="The cover of Stubborn Attachments"
-      />
-      <div className="description">
-      <h3>Stubborn Attachments</h3>
-      <h5>$20.00</h5>
-      </div>
-    </div>
-    <form action={`${apiBaseUrl}/api/checkout/create-checkout-session`} method="POST">
-      <button type="submit">
-        Checkout
-      </button>
-    </form>
-  </section>
-);
-
 const Message = ({ message }) => (
   <section>
     <p>{message}</p>
@@ -32,7 +12,8 @@ const Message = ({ message }) => (
 );
 
 export default function App() {
-  const [message, setMessage] = useState("");
+  const [isLoaded, setIsLoaded] = useState(false);
+  const [message, setMessage] = useState()
   const [products, setProducts] = useState([]);
   const [cart, setCart] = useState({})
 
@@ -43,23 +24,24 @@ export default function App() {
     })
     .then(products => {
       setProducts(products)
+      setIsLoaded(true)
     })
   },[])
 
-  // useEffect(() => {
-  //   // Check to see if this is a redirect back from Checkout
-  //   const query = new URLSearchParams(window.location.search);
+  useEffect(() => {
+    // Check to see if this is a redirect back from Checkout
+    const query = new URLSearchParams(window.location.search);
 
-  //   if (query.get("success")) {
-  //     setMessage("Order placed! You will receive an email confirmation.");
-  //   }
+    if (query.get("success")) {
+      setMessage("Order placed! You will receive an email confirmation.");
+    }
 
-  //   if (query.get("canceled")) {
-  //     setMessage(
-  //       "Order canceled -- continue to shop around and checkout when you're ready."
-  //     );
-  //   }
-  // }, []);
+    if (query.get("canceled")) {
+      setMessage(
+        "Order canceled -- continue to shop around and checkout when you're ready."
+      );
+    }
+  }, []);
 
   function addItemToCart(product) {
     setCart(prevCart => {
@@ -80,15 +62,18 @@ export default function App() {
   }
 
   return (
-    <div id="container">
-      <ProductCatalog products={products} addItemToCart={addItemToCart}/>
-      <Cart cart={cart} setCart={setCart}/>
-    </div>
+    <>
+      <h1>Cozy Threads</h1>
+      {!isLoaded && <div id="initialLoader" className='loader'></div>}
+      {isLoaded &&
+      <>
+        {message && <p id="transactionResult">{message}</p>}
+        <div id="container">
+          <ProductCatalog products={products} addItemToCart={addItemToCart}/>
+          <Cart cart={cart} setCart={setCart}/>
+        </div>
+      </>
+      }
+    </>
   )
-
-  return message ? (
-    <Message message={message} />
-  ) : (
-    <ProductDisplay />
-  );
 }

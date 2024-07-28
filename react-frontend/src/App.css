@@ -1,5 +1,21 @@
+h1 {
+  width: fit-content;
+  margin: 20px auto;
+}
+
 #container {
   display: flex;
+  width: fit-content;
+  margin: 0 auto;
+  position: relative;
+}
+
+#transactionResult {
+  margin: 10px auto;
+  width: fit-content;
+  background-color: rgb(238, 238, 238);
+  padding: 10px 20px;
+  border-radius: 5px;
 }
 
 .productCard {
@@ -29,12 +45,31 @@ p {
   margin: 5px 0;
 }
 
+.addToCart {
+  background-color: #a0a0a0;
+  border-radius: 4px;
+  padding: 5px 15px;
+	color: inherit;
+	border: none;
+	font: inherit;
+	cursor: pointer;
+	outline: inherit;
+  color: white;
+  margin-top: 5px;
+}
+
+.addToCart:hover {
+  background-color: #7c7c7c;
+}
+
 #cartContainer {
   padding: 10px;
-  border: 1px solid black;
+  border: 1px solid rgb(171, 171, 171);;
   border-radius: 5px;
   height: fit-content;
   width: 220px;
+  position: fixed;
+  margin-left: 20px;
 }
 
 h3 {
@@ -50,10 +85,18 @@ h3 {
   margin: 5px 0;
 }
 
+.shoppingCartImageContainer {
+  display: flex;
+}
+
 .shoppingCartRow img {
-  width: 30px;
-  height: 30px;
+  width: 35px;
+  height: 35px;
   margin-right: 10px;
+}
+
+.qty {
+  font-size: 12px;
 }
 
 .shoppingCartRowName {
@@ -64,4 +107,39 @@ h3 {
   margin-top: 10px;
   font-weight: 700;
   font-size: 20px;
+}
+
+#checkOutButton {
+  background-color: #0074D4;
+  border-radius: 4px;
+  padding: 10px 35px;
+	color: inherit;
+	border: none;
+	font: inherit;
+	cursor: pointer;
+	outline: inherit;
+  color: white;
+  margin-top: 5px;
+}
+
+#checkOutButton:hover {
+  background-color: #005aa4;
+}
+
+.loader {
+  border: 6px solid #f3f3f3;
+  border-top: 6px solid #3498db;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  width: 20px;
+  height: 20px;
+}
+
+#initialLoader {
+  margin: 50px auto;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
 }

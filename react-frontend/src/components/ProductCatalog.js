@@ -12,7 +12,7 @@ export default function ProductCatalog({products, addItemToCart}) {
                     <p className="productName">{product.name}</p>
                     <p>{product.description}</p>
                     <p className="productPrice">${getPriceWithDecimal(product.priceData.unit_amount)}</p>
-                    <div onClick={() => addItemToCart(product)}>Add to Cart</div>
+                    <button className="addToCart" onClick={() => addItemToCart(product)}>Add to Cart</button>
                 </div>
             ))}
         </div>

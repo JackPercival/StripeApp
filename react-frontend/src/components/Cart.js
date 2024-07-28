@@ -30,6 +30,10 @@ export default function Cart({cart}) {
     async function handleCheckout() {
         let items = buildCheckoutItems()
 
+        if (!items.length) {
+            return
+        }
+
         const response = await fetch(`${apiBaseUrl}/api/checkout/create-checkout-session`, {
             method: 'POST',
             headers: {
@@ -43,24 +47,27 @@ export default function Cart({cart}) {
     }
 
     return (
-        <div id="cartContainer">
-            <h3>Shopping Cart</h3>
-            {Object.keys(cart).map(productId => {
-                return (
-                    <div className="shoppingCartRow" key={`cart_row_${productId}`}>
-                        <img src={cart[productId].image} />
-                        <div className="shoppingCartRowName">{cart[productId].name}</div>
-                        <div>${getPriceWithDecimal(cart[productId].price)} x {cart[productId].qty}</div>
-                    </div>
-                )
-            })}
-            <p id="cartTotal">Total: ${calculateTotal()}</p>
-            <button onClick={handleCheckout}>Checkout</button>
-            <form action={`${apiBaseUrl}/api/checkout/create-checkout-session`} method="POST">
-      <button type="submit">
-        Checkout 2
-      </button>
-    </form>
+        <div>
+            <div id="cartContainer">
+                <h3>Shopping Cart</h3>
+                {Object.keys(cart).map(productId => {
+                    return (
+                        <div className="shoppingCartRow" key={`cart_row_${productId}`}>
+                            <div className="shoppingCartImageContainer">
+                                <img src={cart[productId].image} />
+                                <div>
+                                    <div className="shoppingCartRowName">{cart[productId].name}</div>
+                                    <div className="qty">Qty {cart[productId].qty}</div>
+                                </div>
+                            </div>
+                            <div>${getPriceWithDecimal(cart[productId].price)}</div>
+                        </div>
+                    )
+                })}
+                <p id="cartTotal">Total: ${calculateTotal()}</p>
+                <button id="checkOutButton" onClick={handleCheckout}>Checkout</button>
+            </div>
+
         </div>
     )
 }
