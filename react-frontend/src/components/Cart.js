@@ -2,17 +2,14 @@ const apiBaseUrl = process.env.REACT_APP_API_BASE_URL;
 
 export default function Cart({cart}) {
 
-    function getPriceWithDecimal(price) {
-        return (price / 100).toFixed(2)
-    }
-
     function calculateTotal() {
         let total = 0;
 
         for (let key in cart) {
             total += cart[key].price * cart[key].qty
         }
-        return getPriceWithDecimal(total)
+        
+        return (total / 100).toFixed(2)
     }
 
     function buildCheckoutItems() {
@@ -60,7 +57,7 @@ export default function Cart({cart}) {
                                     <div className="qty">Qty {cart[productId].qty}</div>
                                 </div>
                             </div>
-                            <div>${getPriceWithDecimal(cart[productId].price)}</div>
+                            <div>${(cart[productId].price /100).toFixed(2)}</div>
                         </div>
                     )
                 })}

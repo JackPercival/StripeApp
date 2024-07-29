@@ -1,21 +1,19 @@
 import React, { useState, useEffect } from "react";
 import ProductCatalog from "./components/ProductCatalog";
 import Cart from "./components/Cart";
+import Cookies from 'js-cookie';
 import "./App.css";
 
 const apiBaseUrl = process.env.REACT_APP_API_BASE_URL;
-
-const Message = ({ message }) => (
-  <section>
-    <p>{message}</p>
-  </section>
-);
 
 export default function App() {
   const [isLoaded, setIsLoaded] = useState(false);
   const [message, setMessage] = useState()
   const [products, setProducts] = useState([]);
-  const [cart, setCart] = useState({})
+  const [cart, setCart] = useState(() => {
+    const savedCart = Cookies.get('cart');
+    return savedCart ? JSON.parse(savedCart) : {};
+  });
 
   useEffect(() => {
     fetch(`${apiBaseUrl}/api/products`)
@@ -34,6 +32,8 @@ export default function App() {
 
     if (query.get("success")) {
       setMessage("Order placed! You will receive an email confirmation.");
+      setCart({})
+      Cookies.remove('cart')
     }
 
     if (query.get("canceled")) {
@@ -47,7 +47,7 @@ export default function App() {
     setCart(prevCart => {
       const isProductInCart = product.id in prevCart;
 
-      return {
+      const newCart = {
         ...prevCart,
         [product.id]: {
           ...prevCart[product.id],
@@ -58,6 +58,10 @@ export default function App() {
           name: product.name,
         }
       };
+
+      Cookies.set('cart', JSON.stringify(newCart), { expires: 7 });
+
+      return newCart;
     });
   }
 
